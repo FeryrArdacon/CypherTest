@@ -1,5 +1,6 @@
 package logic;
 
+import java.io.File;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -43,5 +44,15 @@ public class Cypher
 				Base64.getEncoder().encodeToString(prvk.getEncoded()) };
 				
 		return strs;
+	}
+	
+	public void encryptSymFile(File file, String algor, short bits, String key)
+	{
+	
+	}
+	
+	public void decryptSymFile(File file, String algor, short bits, String key)
+	{
+	
 	}
 }
