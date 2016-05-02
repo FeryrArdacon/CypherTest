@@ -55,4 +55,14 @@ public class Cypher
 	{
 	
 	}
+	
+	public void encryptAsymFile(File file, String algor, short bits, String key)
+	{
+	
+	}
+	
+	public void decryptAsymFile(File file, String algor, short bits, String key)
+	{
+	
+	}
 }
