@@ -2,6 +2,7 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.NoSuchPaddingException;
 
+import gui.MainFrame;
 import logic.Cypher;
 
 public class Main
@@ -16,6 +17,8 @@ public class Main
 		
 		System.out.println("AsymPubKey: " + strs[0]);
 		System.out.println("AsymPrvKey: " + strs[1]);
+		
+		new MainFrame("DSDS-Uebung_2");
 	}
 	
 }
