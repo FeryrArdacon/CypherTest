@@ -35,4 +35,19 @@ public class LogicFactory
 		
 		return asymAlgorList;
 	}
+	
+	public List<CipherType> getAllAlgor()
+	{
+		List<CipherType> algorList = new ArrayList<CipherType>();
+		
+		algorList.add(new CipherType("AES", (short) 128));
+		algorList.add(new CipherType("AES", (short) 192));
+		algorList.add(new CipherType("AES", (short) 256));
+		
+		algorList.add(new CipherType("RSA", (short) 512));
+		algorList.add(new CipherType("RSA", (short) 1024));
+		algorList.add(new CipherType("RSA", (short) 2048));
+		
+		return algorList;
+	}
 }

@@ -5,7 +5,10 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+import gui.views.CipherPanel;
 import gui.views.GenerateKeyPanel;
+import gui.views.HashingPanel;
+import gui.views.SignaturePanel;
 
 public class MainFrame extends JFrame
 {
@@ -23,9 +26,9 @@ public class MainFrame extends JFrame
 		JTabbedPane tpane = new JTabbedPane();
 		
 		tpane.addTab("Generate key", new GenerateKeyPanel());
-		tpane.addTab("En-/Decrypt file", new GenerateKeyPanel());
-		tpane.addTab("Hash file", new GenerateKeyPanel());
-		tpane.addTab("Create/Check signature for file", new GenerateKeyPanel());
+		tpane.addTab("En-/Decrypt file", new CipherPanel());
+		tpane.addTab("Hash file", new HashingPanel());
+		tpane.addTab("Create/Check signature for file", new SignaturePanel());
 		
 		this.add(tpane, BorderLayout.CENTER);
 		
