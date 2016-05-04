@@ -1,16 +1,20 @@
 package gui.views;
 
+import gui.GUIFactory;
+
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
@@ -31,41 +35,62 @@ public class GenerateKeyPanel extends JPanel
 	private JTextArea taSymKey = new JTextArea(25, 120),
 			taAsymPubKey = new JTextArea(10, 120),
 			taAsymPrvKey = new JTextArea(15, 120);
-			
+	
 	public GenerateKeyPanel()
 	{
 		JTabbedPane tpane = new JTabbedPane();
-		JPanel panelSym = new JPanel(new BorderLayout()),
-				panelAsym = new JPanel(new BorderLayout()),
-				panelSymKey = new JPanel(new GridLayout(1, 1)),
-				panelAsymKey = new JPanel(new GridLayout(2, 1));
-				
+		JPanel panelSym = new JPanel(new BorderLayout()), panelAsym = new JPanel(
+				new BorderLayout()), panelSymKey = new JPanel(
+				new GridBagLayout()), panelAsymKey = new JPanel(
+				new GridBagLayout());
+		JScrollPane jscpSym = new JScrollPane(panelSymKey), jscpAsym = new JScrollPane(
+				panelAsymKey);
+		JLabel labelSymKey = new JLabel("Sym. key:"), labelAsymPubKey = new JLabel(
+				"Asym. pub. key:"), labelAsymPrvKey = new JLabel(
+				"Asym. prv. key:");
+		
+		GridBagConstraints gbcSymLab = GUIFactory.getInstance().getConstrains(
+				0, 0, 1, 1, 0, 0), gbcSymKey = GUIFactory.getInstance()
+				.getConstrains(1, 0, 1, 1, 0, 0), gbcAsymPubLab = GUIFactory
+				.getInstance().getConstrains(0, 0, 1, 1, 0, 0), gbcAsymPrvLab = GUIFactory
+				.getInstance().getConstrains(0, 1, 1, 1, 0, 0), gbcAsymPubKey = GUIFactory
+				.getInstance().getConstrains(1, 0, 1, 1, 0, 0), gbcAsymPrvKey = GUIFactory
+				.getInstance().getConstrains(1, 1, 1, 1, 0, 0);
+		
 		tpane.add("Sym. key", panelSym);
 		tpane.add("Asym. keys", panelAsym);
 		
-		List<CipherType> symAlgorList =
-				LogicFactory.getInstance().getSymAlgor();
-		List<CipherType> asymAlgorList =
-				LogicFactory.getInstance().getAsymAlgor();
-				
-		cbSym =
-				new JComboBox<>(symAlgorList.toArray());
-		cbAsym =
-				new JComboBox<>(asymAlgorList.toArray());
-				
+		cbSym = new JComboBox<>(LogicFactory.getInstance().getSymAlgor()
+				.toArray());
+		cbAsym = new JComboBox<>(LogicFactory.getInstance().getAsymAlgor()
+				.toArray());
+		
 		panelSym.add(cbSym, BorderLayout.NORTH);
 		panelAsym.add(cbAsym, BorderLayout.NORTH);
 		
-		panelSym.add(panelSymKey, BorderLayout.CENTER);
-		panelAsym.add(panelAsymKey, BorderLayout.CENTER);
+		panelSym.add(jscpSym, BorderLayout.CENTER);
+		panelAsym.add(jscpAsym, BorderLayout.CENTER);
 		
-		panelSymKey.add(taSymKey);
-		panelAsymKey.add(taAsymPubKey);
-		panelAsymKey.add(taAsymPrvKey);
+		panelSymKey.add(labelSymKey, gbcSymLab);
+		panelSymKey.add(taSymKey, gbcSymKey);
+		panelAsymKey.add(labelAsymPubKey, gbcAsymPubLab);
+		panelAsymKey.add(taAsymPubKey, gbcAsymPubKey);
+		panelAsymKey.add(labelAsymPrvKey, gbcAsymPrvLab);
+		panelAsymKey.add(taAsymPrvKey, gbcAsymPrvKey);
 		
-		JButton bttSym = new JButton("Generate sym. key"),
-				bttAsym = new JButton("Generate asym. keys");
-				
+		taSymKey.setLineWrap(true);
+		taSymKey.setWrapStyleWord(false);
+		taSymKey.setEditable(false);
+		taAsymPubKey.setLineWrap(true);
+		taAsymPubKey.setWrapStyleWord(false);
+		taAsymPubKey.setEditable(false);
+		taAsymPubKey.setLineWrap(true);
+		taAsymPrvKey.setWrapStyleWord(false);
+		taAsymPrvKey.setEditable(false);
+		
+		JButton bttSym = new JButton("Generate sym. key"), bttAsym = new JButton(
+				"Generate asym. keys");
+		
 		bttSym.addActionListener(new ButtonListener("SYM"));
 		bttAsym.addActionListener(new ButtonListener("ASYM"));
 		
@@ -92,8 +117,8 @@ public class GenerateKeyPanel extends JPanel
 			case "SYM":
 				try
 				{
-					GenerateKeyPanel.this.taSymKey
-							.setText(Cypher.getInstance().generateSymKey(
+					GenerateKeyPanel.this.taSymKey.setText(Cypher.getInstance()
+							.generateSymKey(
 									((CipherType) GenerateKeyPanel.this.cbSym
 											.getSelectedItem()).getBits()));
 				} catch (NoSuchAlgorithmException e)

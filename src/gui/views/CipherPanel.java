@@ -1,11 +1,12 @@
 package gui.views;
 
+import gui.GUIFactory;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -28,32 +29,25 @@ public class CipherPanel extends JPanel
 	
 	public CipherPanel()
 	{
-		JPanel panelSourceFile = new JPanel(new FlowLayout(FlowLayout.LEFT)),
-				panelTargetFile = new JPanel(new FlowLayout(FlowLayout.LEFT)),
-				panelCenter = new JPanel(new GridBagLayout()),
-				panelSouth = new JPanel(new GridLayout(1, 2)),
-				panelKey = new JPanel(new BorderLayout());
+		JPanel panelSourceFile = new JPanel(new FlowLayout(FlowLayout.LEFT)), panelTargetFile = new JPanel(
+				new FlowLayout(FlowLayout.LEFT)), panelCenter = new JPanel(
+				new GridBagLayout()), panelSouth = new JPanel(new GridLayout(1,
+				2)), panelKey = new JPanel(new BorderLayout());
 		JScrollPane jscp = new JScrollPane(this.taKey);
 		JLabel labelKey = new JLabel("Key:");
-		JTextField tfSourceFile = new JTextField(100),
-				tfTargetFile = new JTextField(100);
-		JComboBox<Object> cbAlgor = new JComboBox<Object>(
-				LogicFactory.getInstance().getAllAlgor().toArray());
-		JButton bttSelSource = new JButton("Search file ..."),
-				bttSelTarget = new JButton("Search file ..."),
-				bttEncrypt = new JButton("Encrypt"),
-				bttDecrypt = new JButton("Decrypt");
-				
-		GridBagConstraints gbcSource = new GridBagConstraints(0, 0, 1, 1, 1, 0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(5, 5, 5, 5), 0, 0),
-				gbcTarget = new GridBagConstraints(0, 1, 1, 1, 1, 0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(5, 5, 5, 5), 0, 0),
-				gbcKey = new GridBagConstraints(0, 2, 1, 1, 0, 1,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(5, 5, 5, 5), 0, 0);
-						
+		JTextField tfSourceFile = new JTextField(100), tfTargetFile = new JTextField(
+				100);
+		JComboBox<Object> cbAlgor = new JComboBox<Object>(LogicFactory
+				.getInstance().getAllAlgor().toArray());
+		JButton bttSelSource = new JButton("Search file ..."), bttSelTarget = new JButton(
+				"Search file ..."), bttEncrypt = new JButton("Encrypt"), bttDecrypt = new JButton(
+				"Decrypt");
+		
+		GridBagConstraints gbcSource = GUIFactory.getInstance().getConstrains(
+				0, 0, 1, 1, 1, 0), gbcTarget = GUIFactory.getInstance()
+				.getConstrains(0, 1, 1, 1, 1, 0), gbcKey = GUIFactory
+				.getInstance().getConstrains(0, 2, 1, 1, 0, 1);
+		
 		this.setLayout(new BorderLayout());
 		
 		panelCenter.add(panelSourceFile, gbcSource);
