@@ -25,8 +25,9 @@ import io.IO;
 public class Cypher
 {
 	private static Cypher instance = null;
-	private static final String IV = "AAAAAAAAAAAAAAAA";
-	
+	private static final String IV =
+			"frDmTQ1hxVAUltPV8QbYivppQRcxLol2wmc7oweMhbI=";
+			
 	public static Cypher getInstance()
 	{
 		return Cypher.instance == null ? Cypher.instance = new Cypher()

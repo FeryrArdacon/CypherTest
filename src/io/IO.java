@@ -1,10 +1,12 @@
 package io;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class IO
 {
@@ -17,17 +19,25 @@ public class IO
 	
 	public byte[] loadFile(File file) throws IOException
 	{
-		String str = "", tmp = "";
-		BufferedReader bffrd = new BufferedReader(new FileReader(file));
-		
-		while ((tmp = bffrd.readLine()) != null)
+		LinkedList<Byte> listOfBytes = new LinkedList<Byte>();
+		int tmp = -1;
+		BufferedInputStream bffis =
+				new BufferedInputStream(new FileInputStream(file));
+				
+		while ((tmp = bffis.read()) > -1)
 		{
-			str = str + tmp;
+			listOfBytes.add(new Byte((byte) tmp));
 		}
 		
-		bffrd.close();
+		bffis.close();
 		
-		return str.getBytes();
+		byte[] bytes = new byte[listOfBytes.size()];
+		Iterator<Byte> iterator = listOfBytes.iterator();
+		
+		for (int i = 0; i < bytes.length; i++)
+			bytes[i] = iterator.next().byteValue();
+			
+		return bytes;
 	}
 	
 	public void writeFile(File file, byte[] bytes) throws IOException
