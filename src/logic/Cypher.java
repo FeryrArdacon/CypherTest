@@ -1,6 +1,9 @@
 package logic;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -8,13 +11,21 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Base64;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+import io.IO;
 
 public class Cypher
 {
 	private static Cypher instance = null;
+	private static final String IV = "AAAAAAAAAAAAAAAA";
 	
 	public static Cypher getInstance()
 	{
@@ -46,22 +57,52 @@ public class Cypher
 		return strs;
 	}
 	
-	public void encryptSymFile(File file, String algor, short bits, String key)
+	public void encryptSymFile(File fileSource, File fileTarget, String algor,
+			short bits, String key)
+					throws NoSuchAlgorithmException, NoSuchPaddingException,
+					IOException, InvalidKeyException,
+					InvalidAlgorithmParameterException,
+					IllegalBlockSizeException,
+					BadPaddingException
+	{
+		Cipher cipher = Cipher.getInstance(algor + bits);
+		byte[] keyBytes = Base64.getDecoder().decode(key);
+		byte[] data = IO.getInstance().loadFile(fileSource);
+		
+		SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
+		cipher.init(Cipher.ENCRYPT_MODE, keySpec,
+				new IvParameterSpec(IV.getBytes()));
+		data = cipher.doFinal(data);
+		
+		IO.getInstance().writeFile(fileTarget, data);
+	}
+	
+	public void decryptSymFile(File fileSource, File fileTarget, String algor,
+			short bits, String key) throws NoSuchAlgorithmException,
+					NoSuchPaddingException, IOException, InvalidKeyException,
+					InvalidAlgorithmParameterException,
+					IllegalBlockSizeException, BadPaddingException
+	{
+		Cipher cipher = Cipher.getInstance(algor + bits);
+		byte[] keyBytes = Base64.getDecoder().decode(key);
+		byte[] data = IO.getInstance().loadFile(fileSource);
+		
+		SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
+		cipher.init(Cipher.DECRYPT_MODE, keySpec,
+				new IvParameterSpec(IV.getBytes()));
+		data = cipher.doFinal(data);
+		
+		IO.getInstance().writeFile(fileTarget, data);
+	}
+	
+	public void encryptAsymFile(File fileSource, File fileTarget, String algor,
+			short bits, String key)
 	{
 	
 	}
 	
-	public void decryptSymFile(File file, String algor, short bits, String key)
-	{
-	
-	}
-	
-	public void encryptAsymFile(File file, String algor, short bits, String key)
-	{
-	
-	}
-	
-	public void decryptAsymFile(File file, String algor, short bits, String key)
+	public void decryptAsymFile(File fileSource, File fileTarget, String algor,
+			short bits, String key)
 	{
 	
 	}

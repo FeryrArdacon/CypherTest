@@ -28,9 +28,9 @@ public class GenerateKeyPanel extends JPanel
 	
 	JComboBox<Object> cbSym, cbAsym;
 	
-	private JTextArea taSymKey = new JTextArea(10, 70),
-			taAsymPubKey = new JTextArea(4, 70),
-			taAsymPrvKey = new JTextArea(6, 70);
+	private JTextArea taSymKey = new JTextArea(25, 120),
+			taAsymPubKey = new JTextArea(10, 120),
+			taAsymPrvKey = new JTextArea(15, 120);
 			
 	public GenerateKeyPanel()
 	{
