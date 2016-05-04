@@ -1,21 +1,36 @@
 package gui.views;
 
 import gui.GUIFactory;
+import gui.WordProcessingFactory;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileSystemView;
 
+import logic.CipherType;
+import logic.Cypher;
 import logic.LogicFactory;
 
 public class CipherPanel extends JPanel
@@ -25,7 +40,8 @@ public class CipherPanel extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 8597621776818313583L;
-	private JTextArea taKey = new JTextArea(15, 120);
+	private JTextArea taKey = GUIFactory.getInstance().createJTextArea(15, 120);
+	private JComboBox<Object> cbAlgor;
 	
 	public CipherPanel()
 	{
@@ -35,18 +51,26 @@ public class CipherPanel extends JPanel
 				2)), panelKey = new JPanel(new BorderLayout());
 		JScrollPane jscp = new JScrollPane(this.taKey);
 		JLabel labelKey = new JLabel("Key:");
-		JTextField tfSourceFile = new JTextField(100), tfTargetFile = new JTextField(
-				100);
-		JComboBox<Object> cbAlgor = new JComboBox<Object>(LogicFactory
-				.getInstance().getAllAlgor().toArray());
+		JTextField tfSourceFile = GUIFactory.getInstance()
+				.createJHintTextField(100, "Source file"), tfTargetFile = GUIFactory
+				.getInstance().createJHintTextField(100, "Target file");
+		cbAlgor = new JComboBox<Object>(LogicFactory.getInstance()
+				.getAllAlgor().toArray());
 		JButton bttSelSource = new JButton("Search file ..."), bttSelTarget = new JButton(
 				"Search file ..."), bttEncrypt = new JButton("Encrypt"), bttDecrypt = new JButton(
 				"Decrypt");
 		
+		bttSelSource.addActionListener(new FileSelectionListener(tfSourceFile));
+		bttSelTarget.addActionListener(new FileSelectionListener(tfTargetFile));
+		bttEncrypt.addActionListener(new ButtonListener(tfSourceFile,
+				tfTargetFile, "ENC"));
+		bttDecrypt.addActionListener(new ButtonListener(tfSourceFile,
+				tfTargetFile, "DEC"));
+		
 		GridBagConstraints gbcSource = GUIFactory.getInstance().getConstrains(
 				0, 0, 1, 1, 1, 0), gbcTarget = GUIFactory.getInstance()
 				.getConstrains(0, 1, 1, 1, 1, 0), gbcKey = GUIFactory
-				.getInstance().getConstrains(0, 2, 1, 1, 0, 1);
+				.getInstance().getConstrains(0, 2, 1, 1, 0, 0);
 		
 		this.setLayout(new BorderLayout());
 		
@@ -69,5 +93,186 @@ public class CipherPanel extends JPanel
 		this.add(cbAlgor, BorderLayout.NORTH);
 		this.add(panelCenter, BorderLayout.CENTER);
 		this.add(panelSouth, BorderLayout.SOUTH);
+	}
+	
+	private class FileSelectionListener implements ActionListener
+	{
+		JTextField tf = null;
+		
+		public FileSelectionListener(JTextField tf)
+		{
+			this.tf = tf;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			JFileChooser jfc = new JFileChooser(FileSystemView
+					.getFileSystemView().getHomeDirectory());
+			
+			int rc = jfc.showOpenDialog(CipherPanel.this);
+			if (rc == JFileChooser.APPROVE_OPTION)
+			{
+				tf.setText(jfc.getSelectedFile().getAbsolutePath());
+			}
+		}
+		
+	}
+	
+	private class ButtonListener implements ActionListener
+	{
+		String type = "";
+		JTextField source = null, target = null;
+		
+		public ButtonListener(JTextField source, JTextField target, String type)
+		{
+			this.source = source;
+			this.target = target;
+			this.type = type;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			switch (type)
+			{
+			case "ENC":
+				try
+				{
+					switch (((CipherType) CipherPanel.this.cbAlgor
+							.getSelectedItem()).getAlgor())
+					{
+					case "AES":
+						Cypher.getInstance().encryptSymFile(
+								new File(source.getText()),
+								new File(target.getText()),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getCypherAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getBits(),
+								WordProcessingFactory.getInstance()
+										.removeLineBreaks(
+												CipherPanel.this.taKey
+														.getText()));
+						break;
+					case "RSA":
+						Cypher.getInstance().encryptAsymFile(
+								new File(source.getText()),
+								new File(target.getText()),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getCypherAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getBits(),
+								WordProcessingFactory.getInstance()
+										.removeLineBreaks(
+												CipherPanel.this.taKey
+														.getText()));
+						break;
+					}
+				} catch (InvalidKeyException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidAlgorithmParameterException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BadPaddingException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case "DEC":
+				try
+				{
+					switch (((CipherType) CipherPanel.this.cbAlgor
+							.getSelectedItem()).getAlgor())
+					{
+					case "AES":
+						Cypher.getInstance().decryptSymFile(
+								new File(source.getText()),
+								new File(target.getText()),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getCypherAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getBits(),
+								WordProcessingFactory.getInstance()
+										.removeLineBreaks(
+												CipherPanel.this.taKey
+														.getText()));
+						break;
+					case "RSA":
+						Cypher.getInstance().decryptAsymFile(
+								new File(source.getText()),
+								new File(target.getText()),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getCypherAlgor(),
+								((CipherType) CipherPanel.this.cbAlgor
+										.getSelectedItem()).getBits(),
+								WordProcessingFactory.getInstance()
+										.removeLineBreaks(
+												CipherPanel.this.taKey
+														.getText()));
+						break;
+					}
+				} catch (InvalidKeyException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidAlgorithmParameterException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BadPaddingException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+			
+		}
+		
 	}
 }

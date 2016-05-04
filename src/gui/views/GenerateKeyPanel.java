@@ -1,6 +1,7 @@
 package gui.views;
 
 import gui.GUIFactory;
+import gui.WordProcessingFactory;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -8,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
@@ -32,9 +35,10 @@ public class GenerateKeyPanel extends JPanel
 	
 	JComboBox<Object> cbSym, cbAsym;
 	
-	private JTextArea taSymKey = new JTextArea(25, 120),
-			taAsymPubKey = new JTextArea(10, 120),
-			taAsymPrvKey = new JTextArea(15, 120);
+	private JTextArea taSymKey = GUIFactory.getInstance().createJTextArea(25,
+			120), taAsymPubKey = GUIFactory.getInstance().createJTextArea(10,
+			120), taAsymPrvKey = GUIFactory.getInstance().createJTextArea(15,
+			120);
 	
 	public GenerateKeyPanel()
 	{
@@ -117,6 +121,15 @@ public class GenerateKeyPanel extends JPanel
 			case "SYM":
 				try
 				{
+					/*
+					 * List<String> list = WordProcessingFactory .getInstance()
+					 * .createWordWrap( Cypher.getInstance() .generateSymKey(
+					 * ((CipherType) GenerateKeyPanel.this.cbSym
+					 * .getSelectedItem()) .getBits()), 120, new
+					 * LinkedList<String>()); for (String s : list)
+					 * GenerateKeyPanel.this.taSymKey.append(s +
+					 * System.lineSeparator());
+					 */
 					GenerateKeyPanel.this.taSymKey.setText(Cypher.getInstance()
 							.generateSymKey(
 									((CipherType) GenerateKeyPanel.this.cbSym
@@ -132,14 +145,26 @@ public class GenerateKeyPanel extends JPanel
 				}
 				break;
 			case "ASYM":
-				String[] str = null;
+				List<String> strKeyPub = null;
+				List<String> strKeyPrv = null;
+				String[] tmp = null;
 				try
 				{
-					str = Cypher.getInstance().generateAsymKey(
+					tmp = Cypher.getInstance().generateAsymKey(
 							((CipherType) GenerateKeyPanel.this.cbAsym
 									.getSelectedItem()).getBits());
-					GenerateKeyPanel.this.taAsymPubKey.setText(str[0]);
-					GenerateKeyPanel.this.taAsymPrvKey.setText(str[1]);
+					strKeyPub = WordProcessingFactory.getInstance()
+							.createWordWrap(tmp[0], 120,
+									new LinkedList<String>());
+					strKeyPrv = WordProcessingFactory.getInstance()
+							.createWordWrap(tmp[1], 120,
+									new LinkedList<String>());
+					for (String s : strKeyPub)
+						GenerateKeyPanel.this.taAsymPubKey.append(s
+								+ System.lineSeparator());
+					for (String s : strKeyPrv)
+						GenerateKeyPanel.this.taAsymPrvKey.append(s
+								+ System.lineSeparator());
 				} catch (NoSuchAlgorithmException e)
 				{
 					// TODO Auto-generated catch block

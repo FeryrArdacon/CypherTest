@@ -34,7 +34,10 @@ public class WordProcessingFactory
 	
 	public String removeLineBreaks(String sentence)
 	{
-		return sentence.replaceAll(Pattern.quote(System.lineSeparator()),
-				Pattern.quote(""));
+		return sentence
+				.replaceAll(Pattern.quote(System.lineSeparator()),
+						Pattern.quote(""))
+				.replaceAll(Pattern.quote("\n\r"), Pattern.quote(""))
+				.replaceAll(Pattern.quote("\n"), Pattern.quote(""));
 	}
 }

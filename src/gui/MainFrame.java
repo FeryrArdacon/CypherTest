@@ -1,14 +1,14 @@
 package gui;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-
 import gui.views.CipherPanel;
 import gui.views.GenerateKeyPanel;
 import gui.views.HashingPanel;
 import gui.views.SignaturePanel;
+
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 public class MainFrame extends JFrame
 {
@@ -34,8 +34,7 @@ public class MainFrame extends JFrame
 		
 		this.pack();
 		this.setLocationRelativeTo(null);
-		this.setMinimumSize(this.getSize());
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
