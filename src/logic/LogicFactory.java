@@ -9,7 +9,8 @@ public class LogicFactory
 	
 	public static LogicFactory getInstance()
 	{
-		return LogicFactory.instance == null ? LogicFactory.instance = new LogicFactory()
+		return LogicFactory.instance == null
+				? LogicFactory.instance = new LogicFactory()
 				: LogicFactory.instance;
 	}
 	
@@ -19,11 +20,7 @@ public class LogicFactory
 		
 		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding",
 				(short) 128));
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding",
-				(short) 192));
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding",
-				(short) 256));
-		
+				
 		return symAlgorList;
 	}
 	
@@ -31,10 +28,9 @@ public class LogicFactory
 	{
 		List<CipherType> asymAlgorList = new ArrayList<CipherType>();
 		
-		asymAlgorList.add(new CipherType("RSA", "", (short) 512));
-		asymAlgorList.add(new CipherType("RSA", "", (short) 1024));
-		asymAlgorList.add(new CipherType("RSA", "", (short) 2048));
-		
+		asymAlgorList
+				.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512));
+				
 		return asymAlgorList;
 	}
 	
@@ -43,15 +39,10 @@ public class LogicFactory
 		List<CipherType> algorList = new ArrayList<CipherType>();
 		
 		algorList
-				.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128));
-		algorList
-				.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192));
-		algorList
-				.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256));
-		
-		algorList.add(new CipherType("RSA", "", (short) 512));
-		algorList.add(new CipherType("RSA", "", (short) 1024));
-		algorList.add(new CipherType("RSA", "", (short) 2048));
+				.add(new CipherType("AES", "AES/CBC/PKCS5Padding",
+						(short) 128));
+						
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512));
 		
 		return algorList;
 	}

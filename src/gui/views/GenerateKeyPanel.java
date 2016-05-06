@@ -1,8 +1,5 @@
 package gui.views;
 
-import gui.GUIFactory;
-import gui.WordProcessingFactory;
-
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
+import gui.GUIFactory;
+import gui.WordProcessingFactory;
 import logic.CipherType;
 import logic.Cypher;
 import logic.LogicFactory;
@@ -37,30 +36,41 @@ public class GenerateKeyPanel extends JPanel
 	
 	private JTextArea taSymKey = GUIFactory.getInstance().createJTextArea(25,
 			120), taAsymPubKey = GUIFactory.getInstance().createJTextArea(10,
-			120), taAsymPrvKey = GUIFactory.getInstance().createJTextArea(15,
-			120);
-	
+					120),
+			taAsymPrvKey = GUIFactory.getInstance().createJTextArea(15,
+					120);
+					
 	public GenerateKeyPanel()
 	{
 		JTabbedPane tpane = new JTabbedPane();
-		JPanel panelSym = new JPanel(new BorderLayout()), panelAsym = new JPanel(
-				new BorderLayout()), panelSymKey = new JPanel(
-				new GridBagLayout()), panelAsymKey = new JPanel(
-				new GridBagLayout());
-		JScrollPane jscpSym = new JScrollPane(panelSymKey), jscpAsym = new JScrollPane(
-				panelAsymKey);
-		JLabel labelSymKey = new JLabel("Sym. key:"), labelAsymPubKey = new JLabel(
-				"Asym. pub. key:"), labelAsymPrvKey = new JLabel(
-				"Asym. prv. key:");
-		
+		JPanel panelSym = new JPanel(new BorderLayout()),
+				panelAsym = new JPanel(
+						new BorderLayout()),
+				panelSymKey = new JPanel(
+						new GridBagLayout()),
+				panelAsymKey = new JPanel(
+						new GridBagLayout());
+		JScrollPane jscpSym = new JScrollPane(panelSymKey),
+				jscpAsym = new JScrollPane(
+						panelAsymKey);
+		JLabel labelSymKey = new JLabel("Sym. key:"),
+				labelAsymPubKey = new JLabel(
+						"Asym. pub. key:"),
+				labelAsymPrvKey = new JLabel(
+						"Asym. prv. key:");
+						
 		GridBagConstraints gbcSymLab = GUIFactory.getInstance().getConstrains(
 				0, 0, 1, 1, 0, 0), gbcSymKey = GUIFactory.getInstance()
-				.getConstrains(1, 0, 1, 1, 0, 0), gbcAsymPubLab = GUIFactory
-				.getInstance().getConstrains(0, 0, 1, 1, 0, 0), gbcAsymPrvLab = GUIFactory
-				.getInstance().getConstrains(0, 1, 1, 1, 0, 0), gbcAsymPubKey = GUIFactory
-				.getInstance().getConstrains(1, 0, 1, 1, 0, 0), gbcAsymPrvKey = GUIFactory
-				.getInstance().getConstrains(1, 1, 1, 1, 0, 0);
-		
+						.getConstrains(1, 0, 1, 1, 0, 0),
+				gbcAsymPubLab = GUIFactory
+						.getInstance().getConstrains(0, 0, 1, 1, 0, 0),
+				gbcAsymPrvLab = GUIFactory
+						.getInstance().getConstrains(0, 1, 1, 1, 0, 0),
+				gbcAsymPubKey = GUIFactory
+						.getInstance().getConstrains(1, 0, 1, 1, 0, 0),
+				gbcAsymPrvKey = GUIFactory
+						.getInstance().getConstrains(1, 1, 1, 1, 0, 0);
+						
 		tpane.add("Sym. key", panelSym);
 		tpane.add("Asym. keys", panelAsym);
 		
@@ -68,7 +78,7 @@ public class GenerateKeyPanel extends JPanel
 				.toArray());
 		cbAsym = new JComboBox<>(LogicFactory.getInstance().getAsymAlgor()
 				.toArray());
-		
+				
 		panelSym.add(cbSym, BorderLayout.NORTH);
 		panelAsym.add(cbAsym, BorderLayout.NORTH);
 		
@@ -92,9 +102,10 @@ public class GenerateKeyPanel extends JPanel
 		taAsymPrvKey.setWrapStyleWord(false);
 		taAsymPrvKey.setEditable(false);
 		
-		JButton bttSym = new JButton("Generate sym. key"), bttAsym = new JButton(
-				"Generate asym. keys");
-		
+		JButton bttSym = new JButton("Generate sym. key"),
+				bttAsym = new JButton(
+						"Generate asym. keys");
+						
 		bttSym.addActionListener(new ButtonListener("SYM"));
 		bttAsym.addActionListener(new ButtonListener("ASYM"));
 		
@@ -121,19 +132,17 @@ public class GenerateKeyPanel extends JPanel
 			case "SYM":
 				try
 				{
-					/*
-					 * List<String> list = WordProcessingFactory .getInstance()
-					 * .createWordWrap( Cypher.getInstance() .generateSymKey(
-					 * ((CipherType) GenerateKeyPanel.this.cbSym
-					 * .getSelectedItem()) .getBits()), 120, new
-					 * LinkedList<String>()); for (String s : list)
-					 * GenerateKeyPanel.this.taSymKey.append(s +
-					 * System.lineSeparator());
-					 */
-					GenerateKeyPanel.this.taSymKey.setText(Cypher.getInstance()
-							.generateSymKey(
+					
+					List<String> list = WordProcessingFactory.getInstance()
+							.createWordWrap(Cypher.getInstance().generateSymKey(
 									((CipherType) GenerateKeyPanel.this.cbSym
-											.getSelectedItem()).getBits()));
+											.getSelectedItem()).getAlgor(),
+									((CipherType) GenerateKeyPanel.this.cbSym
+											.getSelectedItem()).getBits()),
+									120, new LinkedList<String>());
+					for (String s : list)
+						GenerateKeyPanel.this.taSymKey.append(s +
+								System.lineSeparator());
 				} catch (NoSuchAlgorithmException e)
 				{
 					// TODO Auto-generated catch block
@@ -151,6 +160,8 @@ public class GenerateKeyPanel extends JPanel
 				try
 				{
 					tmp = Cypher.getInstance().generateAsymKey(
+							((CipherType) GenerateKeyPanel.this.cbAsym
+									.getSelectedItem()).getAlgor(),
 							((CipherType) GenerateKeyPanel.this.cbAsym
 									.getSelectedItem()).getBits());
 					strKeyPub = WordProcessingFactory.getInstance()

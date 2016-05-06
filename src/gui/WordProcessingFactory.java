@@ -1,7 +1,6 @@
 package gui;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class WordProcessingFactory
 {
@@ -25,7 +24,7 @@ public class WordProcessingFactory
 		{
 			
 			teil1 = sentence.substring(0, wrap);
-			teil2 = sentence.substring(wrap + 1);
+			teil2 = sentence.substring(wrap);
 			text.add(teil1);
 			return this.createWordWrap(teil2, wrap, text);
 			
@@ -35,9 +34,8 @@ public class WordProcessingFactory
 	public String removeLineBreaks(String sentence)
 	{
 		return sentence
-				.replaceAll(Pattern.quote(System.lineSeparator()),
-						Pattern.quote(""))
-				.replaceAll(Pattern.quote("\n\r"), Pattern.quote(""))
-				.replaceAll(Pattern.quote("\n"), Pattern.quote(""));
+				.replaceAll(System.lineSeparator(), "")
+				.replaceAll("\\r", "")
+				.replaceAll("\\n", "");
 	}
 }
