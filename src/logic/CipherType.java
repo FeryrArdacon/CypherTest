@@ -31,7 +31,7 @@ public class CipherType
 	@Override
 	public String toString()
 	{
-		return this.algor + " " + this.bits + " Bit";
+		return this.algor + " (" + this.cypherAlgor + ") " + this.bits + " Bit";
 	}
 	
 	/*
