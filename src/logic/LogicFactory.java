@@ -46,4 +46,14 @@ public class LogicFactory
 		
 		return algorList;
 	}
+	
+	public List<CipherType> getHashAlgor()
+	{
+		List<CipherType> hashAlgorList = new ArrayList<CipherType>();
+		
+		hashAlgorList
+				.add(new CipherType("SHA-1", "", (short) 0));
+				
+		return hashAlgorList;
+	}
 }

@@ -132,6 +132,7 @@ public class GenerateKeyPanel extends JPanel
 			case "SYM":
 				try
 				{
+					GenerateKeyPanel.this.taSymKey.setText("");
 					
 					List<String> list = WordProcessingFactory.getInstance()
 							.createWordWrap(Cypher.getInstance().generateSymKey(
@@ -159,6 +160,8 @@ public class GenerateKeyPanel extends JPanel
 				String[] tmp = null;
 				try
 				{
+					GenerateKeyPanel.this.taAsymPubKey.setText("");
+					GenerateKeyPanel.this.taAsymPrvKey.setText("");
 					tmp = Cypher.getInstance().generateAsymKey(
 							((CipherType) GenerateKeyPanel.this.cbAsym
 									.getSelectedItem()).getAlgor(),
@@ -183,6 +186,7 @@ public class GenerateKeyPanel extends JPanel
 				}
 				break;
 			}
+			
 		}
 		
 	}

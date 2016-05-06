@@ -19,16 +19,15 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileSystemView;
 
 import gui.GUIFactory;
 import gui.WordProcessingFactory;
+import gui.model.FileSelectionListener;
 import logic.CipherType;
 import logic.Cypher;
 import logic.LogicFactory;
@@ -67,8 +66,10 @@ public class CipherPanel extends JPanel
 				bttEncrypt = new JButton("Encrypt"), bttDecrypt = new JButton(
 						"Decrypt");
 						
-		bttSelSource.addActionListener(new FileSelectionListener(tfSourceFile));
-		bttSelTarget.addActionListener(new FileSelectionListener(tfTargetFile));
+		bttSelSource.addActionListener(
+				new FileSelectionListener(tfSourceFile, this));
+		bttSelTarget.addActionListener(
+				new FileSelectionListener(tfTargetFile, this));
 		bttEncrypt.addActionListener(new ButtonListener(tfSourceFile,
 				tfTargetFile, "ENC"));
 		bttDecrypt.addActionListener(new ButtonListener(tfSourceFile,
@@ -101,30 +102,6 @@ public class CipherPanel extends JPanel
 		this.add(cbAlgor, BorderLayout.NORTH);
 		this.add(panelCenter, BorderLayout.CENTER);
 		this.add(panelSouth, BorderLayout.SOUTH);
-	}
-	
-	private class FileSelectionListener implements ActionListener
-	{
-		JTextField tf = null;
-		
-		public FileSelectionListener(JTextField tf)
-		{
-			this.tf = tf;
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			JFileChooser jfc = new JFileChooser(FileSystemView
-					.getFileSystemView().getHomeDirectory());
-					
-			int rc = jfc.showOpenDialog(CipherPanel.this);
-			if (rc == JFileChooser.APPROVE_OPTION)
-			{
-				tf.setText(jfc.getSelectedFile().getAbsolutePath());
-			}
-		}
-		
 	}
 	
 	private class ButtonListener implements ActionListener

@@ -7,6 +7,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -135,6 +136,15 @@ public class Cypher
 		data = cipher.doFinal(data);
 		
 		IO.getInstance().writeFile(fileTarget, data);
+	}
+	
+	public String hashFile(File fileSource, String algor)
+			throws NoSuchAlgorithmException, IOException
+	{
+		MessageDigest digest = MessageDigest.getInstance(algor);
+		byte[] data = IO.getInstance().loadFile(fileSource);
+		
+		return Base64.getEncoder().encodeToString(digest.digest(data));
 	}
 	
 	private byte[] getIV(short bits)
