@@ -1,5 +1,9 @@
 package gui.views;
 
+import gui.GUIFactory;
+import gui.WordProcessingFactory;
+import gui.model.FileSelectionListener;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -20,9 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import gui.GUIFactory;
-import gui.WordProcessingFactory;
-import gui.model.FileSelectionListener;
 import logic.CipherType;
 import logic.Cypher;
 import logic.LogicFactory;
@@ -34,34 +35,31 @@ public class HashingPanel extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = -6816143938760049890L;
-	private JTextArea taHash =
-			GUIFactory.getInstance().createJTextArea(15, 120);
+	private JTextArea taHash = GUIFactory.getInstance()
+			.createJTextArea(15, 120);
 	private JComboBox<Object> cbAlgor;
 	
 	public HashingPanel()
 	{
-		JPanel panelSourceFile = new JPanel(new FlowLayout(FlowLayout.LEFT)),
-				panelCenter = new JPanel(
-						new GridBagLayout()),
-				panelKey = new JPanel(new BorderLayout());
+		JPanel panelSourceFile = new JPanel(new FlowLayout(FlowLayout.LEFT)), panelCenter = new JPanel(
+				new GridBagLayout()), panelKey = new JPanel(new BorderLayout());
 		JScrollPane jscp = new JScrollPane(this.taHash);
 		JLabel labelKey = new JLabel("Hash value:");
 		JTextField tfSourceFile = GUIFactory.getInstance()
 				.createJHintTextField(100, "Source file");
 		cbAlgor = new JComboBox<Object>(LogicFactory.getInstance()
 				.getHashAlgor().toArray());
-		JButton bttSelSource = new JButton("Search file ..."),
-				bttHash = new JButton("Hash file");
-				
-		bttSelSource.addActionListener(
-				new FileSelectionListener(tfSourceFile, this));
+		JButton bttSelSource = new JButton("Search file ..."), bttHash = new JButton(
+				"Hash file");
+		
+		bttSelSource.addActionListener(new FileSelectionListener(tfSourceFile,
+				this));
 		bttHash.addActionListener(new ButtonListener(tfSourceFile));
 		
 		GridBagConstraints gbcSource = GUIFactory.getInstance().getConstrains(
-				0, 0, 1, 1, 1, 0),
-				gbcKey = GUIFactory
-						.getInstance().getConstrains(0, 2, 1, 1, 0, 0);
-						
+				0, 0, 1, 1, 1, 0), gbcKey = GUIFactory.getInstance()
+				.getConstrains(0, 1, 1, 1, 0, 0);
+		
 		this.setLayout(new BorderLayout());
 		
 		panelCenter.add(panelSourceFile, gbcSource);
@@ -94,17 +92,18 @@ public class HashingPanel extends JPanel
 			{
 				HashingPanel.this.taHash.setText("");
 				
-				List<String> list = WordProcessingFactory.getInstance()
-						.createWordWrap(Cypher.getInstance().hashFile(
-								new File(this.source.getText()),
-								((CipherType) HashingPanel.this.cbAlgor
-										.getSelectedItem())
-												.getAlgor()),
+				List<String> list = WordProcessingFactory
+						.getInstance()
+						.createWordWrap(
+								Cypher.getInstance().hashFile(
+										new File(this.source.getText()),
+										((CipherType) HashingPanel.this.cbAlgor
+												.getSelectedItem()).getAlgor()),
 								120, new LinkedList<String>());
-								
+				
 				for (String s : list)
 					HashingPanel.this.taHash.append(s);
-					
+				
 			} catch (NoSuchAlgorithmException e)
 			{
 				// TODO Auto-generated catch block

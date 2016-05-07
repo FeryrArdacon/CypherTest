@@ -156,7 +156,7 @@ public class Cypher
 		byte[] signatureBytes = Base64.getDecoder().decode(signature);
 		
 		hashValues[0] = this.hashFile(fileSource, algorHash);
-		this.encryptAsym(cypherAlgor, algorKey, key, signatureBytes);
+		this.decryptAsym(cypherAlgor, algorKey, key, signatureBytes);
 		hashValues[1] = Base64.getEncoder().encodeToString(signatureBytes);
 		
 		return hashValues;
