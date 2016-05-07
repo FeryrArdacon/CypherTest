@@ -140,7 +140,7 @@ public class Cypher
 	{
 		byte[] fileHash = Base64.getDecoder().decode(
 				this.hashFile(fileSource, algorHash));
-		this.encryptAsym(cypherAlgor, algorKey, key, fileHash);
+		this.encryptAsymSign(cypherAlgor, algorKey, key, fileHash);
 		
 		return Base64.getEncoder().encodeToString(fileHash);
 	}
@@ -156,7 +156,7 @@ public class Cypher
 		byte[] signatureBytes = Base64.getDecoder().decode(signature);
 		
 		hashValues[0] = this.hashFile(fileSource, algorHash);
-		this.decryptAsym(cypherAlgor, algorKey, key, signatureBytes);
+		this.decryptAsymSign(cypherAlgor, algorKey, key, signatureBytes);
 		hashValues[1] = Base64.getEncoder().encodeToString(signatureBytes);
 		
 		return hashValues;
@@ -174,6 +174,18 @@ public class Cypher
 		data = cipher.doFinal(data);
 	}
 	
+	private void encryptAsymSign(String cypherAlgor, String algor, String key,
+			byte[] data) throws NoSuchAlgorithmException,
+			NoSuchPaddingException, InvalidKeySpecException,
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+	{
+		Cipher cipher = Cipher.getInstance(cypherAlgor);
+		PrivateKey prvk = this.getPrivateKey(key, algor);
+		
+		cipher.init(Cipher.ENCRYPT_MODE, prvk);
+		data = cipher.doFinal(data);
+	}
+	
 	private void decryptAsym(String cypherAlgor, String algor, String key,
 			byte[] data) throws NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeySpecException,
@@ -183,6 +195,18 @@ public class Cypher
 		PrivateKey prvk = this.getPrivateKey(key, algor);
 		
 		cipher.init(Cipher.DECRYPT_MODE, prvk);
+		data = cipher.doFinal(data);
+	}
+	
+	private void decryptAsymSign(String cypherAlgor, String algor, String key,
+			byte[] data) throws NoSuchAlgorithmException,
+			NoSuchPaddingException, InvalidKeySpecException,
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+	{
+		Cipher cipher = Cipher.getInstance(cypherAlgor);
+		PublicKey pubk = this.getPublicKey(key, algor);
+		
+		cipher.init(Cipher.DECRYPT_MODE, pubk);
 		data = cipher.doFinal(data);
 	}
 	
