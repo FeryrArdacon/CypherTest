@@ -4,11 +4,13 @@ public class CipherType {
 	private String algor = "";
 	private String cypherAlgor = "";
 	private short bits = 0;
+	private String comment = "";
 
-	public CipherType(String algor, String cypherAlgor, short bits) {
+	public CipherType(String algor, String cypherAlgor, short bits, String comment) {
 		this.algor = algor;
 		this.cypherAlgor = cypherAlgor;
 		this.bits = bits;
+		this.comment = comment;
 	}
 
 	public String getAlgor() {
@@ -25,7 +27,7 @@ public class CipherType {
 
 	@Override
 	public String toString() {
-		return this.algor + (this.cypherAlgor.equals("") ? " " : " (" + this.cypherAlgor + ") ") + this.bits + " Bit";
+		return this.algor + (this.cypherAlgor.equals("") ? " " : " (" + this.cypherAlgor + ") ") + this.bits + " Bit " + this.comment;
 	}
 
 	/*

@@ -13,9 +13,9 @@ public class LogicFactory {
 	public List<CipherType> getSymAlgor() {
 		List<CipherType> symAlgorList = new ArrayList<CipherType>();
 
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128));
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192));
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256));
+		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128, ""));
+		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192, "- (not working)"));
+		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256, "- (not working)"));
 
 		return symAlgorList;
 	}
@@ -23,9 +23,9 @@ public class LogicFactory {
 	public List<CipherType> getAsymAlgor() {
 		List<CipherType> asymAlgorList = new ArrayList<CipherType>();
 
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512));
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024));
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, ""));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working)"));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working)"));
 
 		return asymAlgorList;
 	}
@@ -33,13 +33,13 @@ public class LogicFactory {
 	public List<CipherType> getAllAlgor() {
 		List<CipherType> algorList = new ArrayList<CipherType>();
 
-		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128));
-		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192));
-		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256));
+		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128, ""));
+		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192, "- (not working)"));
+		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256, "- (not working)"));
 
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512));
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024));
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048));
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, ""));
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working)"));
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working)"));
 
 		return algorList;
 	}
@@ -47,9 +47,9 @@ public class LogicFactory {
 	public List<CipherType> getHashAlgor() {
 		List<CipherType> hashAlgorList = new ArrayList<CipherType>();
 
-		hashAlgorList.add(new CipherType("MD5", "", (short) 128));
-		hashAlgorList.add(new CipherType("SHA-1", "", (short) 160));
-		hashAlgorList.add(new CipherType("SHA-512", "", (short) 512));
+		hashAlgorList.add(new CipherType("MD5", "", (short) 128, ""));
+		hashAlgorList.add(new CipherType("SHA-1", "", (short) 160, ""));
+		hashAlgorList.add(new CipherType("SHA-512", "", (short) 512, ""));
 
 		return hashAlgorList;
 	}
