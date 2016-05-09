@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 public class IO
 {
 	private static IO instance = null;
@@ -49,5 +51,7 @@ public class IO
 		fos.write(bytes);
 		fos.flush();
 		fos.close();
+		
+		JOptionPane.showMessageDialog(null, "Datei wurde ver-/entschlüsselt.", "Ver-/Entschlüsselung fertig", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

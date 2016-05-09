@@ -23,9 +23,9 @@ public class LogicFactory {
 	public List<CipherType> getAsymAlgor() {
 		List<CipherType> asymAlgorList = new ArrayList<CipherType>();
 
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, ""));
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working)"));
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working)"));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, "- (only short files (64 byte max.))"));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working) (only short files (64 byte max.))"));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working) (only short files (64 byte max.))"));
 
 		return asymAlgorList;
 	}
@@ -37,9 +37,9 @@ public class LogicFactory {
 		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192, "- (not working)"));
 		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256, "- (not working)"));
 
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, ""));
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working)"));
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working)"));
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, "- (only short files (64 byte max.))"));
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working) (only short files (64 byte max.))"));
+		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working) (only short files (64 byte max.))"));
 
 		return algorList;
 	}
