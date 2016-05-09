@@ -76,7 +76,7 @@ public class Cypher
 		
 		SecretKeySpec keySpec = new SecretKeySpec(keyBytes, algor);
 		cipher.init(Cipher.ENCRYPT_MODE, keySpec,
-				new IvParameterSpec(this.getIV(bits)));
+				new IvParameterSpec(this.getIV()));
 		data = cipher.doFinal(data);
 		
 		IO.getInstance().writeFile(fileTarget, data);
@@ -95,7 +95,7 @@ public class Cypher
 		
 		SecretKeySpec keySpec = new SecretKeySpec(keyBytes, algor);
 		cipher.init(Cipher.DECRYPT_MODE, keySpec,
-				new IvParameterSpec(this.getIV(bits)));
+				new IvParameterSpec(this.getIV()));
 		data = cipher.doFinal(data);
 		
 		IO.getInstance().writeFile(fileTarget, data);
@@ -210,9 +210,9 @@ public class Cypher
 		data = cipher.doFinal(data);
 	}
 	
-	private byte[] getIV(short bits)
+	private byte[] getIV()
 	{
-		int length = bits / 8;
+		int length = 16;
 		byte[] iv = new byte[length];
 		for (int i = 0; i < length; i++)
 			iv[i] = 1;
