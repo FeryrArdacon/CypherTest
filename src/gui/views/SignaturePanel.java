@@ -41,8 +41,8 @@ public class SignaturePanel extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 8732217958403251664L;
-	private JTextArea taKey = GUIFactory.getInstance().createJTextArea(15, 120),
-			taSignature = GUIFactory.getInstance().createJTextArea(10, 120),
+	private JTextArea taKey = GUIFactory.getInstance().createJTextArea(13, 120),
+			taSignature = GUIFactory.getInstance().createJTextArea(8, 120),
 			taHashValues = GUIFactory.getInstance().createJTextArea(4, 120);
 	private JComboBox<Object> cbAlgorKey, cbAlgorHash;
 	
@@ -58,10 +58,10 @@ public class SignaturePanel extends JPanel
 				"Signature:"), labelHashValues = new JLabel("Hash vaules:");
 		JTextField tfSourceFile = GUIFactory.getInstance()
 				.createJHintTextField(100, "Source file");
-		cbAlgorKey = new JComboBox<Object>(LogicFactory.getInstance()
-				.getAsymAlgor().toArray());
-		cbAlgorHash = new JComboBox<Object>(LogicFactory.getInstance()
-				.getHashAlgor().toArray());
+		cbAlgorKey = GUIFactory.getInstance().createJComboBox(LogicFactory.getInstance()
+				.getAsymAlgor());
+		cbAlgorHash = GUIFactory.getInstance().createJComboBox(LogicFactory.getInstance()
+				.getHashAlgor());
 		JButton bttSelSource = new JButton("Search file ..."), bttCreateSignature = new JButton(
 				"Create signature"), bttCheckSignature = new JButton(
 				"Check signature");
@@ -75,7 +75,7 @@ public class SignaturePanel extends JPanel
 		
 		GridBagConstraints gbcSource = GUIFactory.getInstance().getConstrains(
 				0, 0, 1, 1, 1, 0), gbcKey = GUIFactory.getInstance()
-				.getConstrains(0, 1, 1, 1, 0, 0);
+				.getConstrains(0, 1, 1, 1, 1, 1);
 		
 		GridBagConstraints gbcLabelKey = GUIFactory.getInstance()
 				.getConstrains(0, 0, 1, 1, 1, 0), gbcTaKey = GUIFactory

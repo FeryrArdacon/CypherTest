@@ -4,6 +4,7 @@ import gui.GUIFactory;
 import gui.WordProcessingFactory;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -35,9 +36,9 @@ public class GenerateKeyPanel extends JPanel
 	
 	JComboBox<Object> cbSym, cbAsym;
 	
-	private JTextArea taSymKey = GUIFactory.getInstance().createJTextArea(25,
-			120), taAsymPubKey = GUIFactory.getInstance().createJTextArea(13,
-			120), taAsymPrvKey = GUIFactory.getInstance().createJTextArea(17,
+	private JTextArea taSymKey = GUIFactory.getInstance().createJTextArea(21,
+			120), taAsymPubKey = GUIFactory.getInstance().createJTextArea(8,
+			120), taAsymPrvKey = GUIFactory.getInstance().createJTextArea(13,
 			120);
 	
 	public GenerateKeyPanel()
@@ -51,7 +52,11 @@ public class GenerateKeyPanel extends JPanel
 				panelAsymKey);
 		JLabel labelSymKey = new JLabel("Sym. key:"), labelAsymPubKey = new JLabel(
 				"Asym. pub. key:"), labelAsymPrvKey = new JLabel(
-				"Asym. prv. key:");
+				"Asym. prv. key:"), labelInfo = new JLabel("In Java exists no standard algorithem "
+						+ "for higher cryptography than AES 128 Bit and RSA 512 Bit. "
+						+ "You can only generate the keys for such higher algorithem.");
+
+		labelInfo.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		
 		GridBagConstraints gbcSymLab = GUIFactory.getInstance().getConstrains(
 				0, 0, 1, 1, 0, 0), gbcSymKey = GUIFactory.getInstance()
@@ -61,13 +66,13 @@ public class GenerateKeyPanel extends JPanel
 				.getInstance().getConstrains(1, 0, 1, 1, 0, 0), gbcAsymPrvKey = GUIFactory
 				.getInstance().getConstrains(1, 1, 1, 1, 0, 0);
 		
+		this.setLayout(new BorderLayout());
+		
 		tpane.add("Sym. key", panelSym);
 		tpane.add("Asym. keys", panelAsym);
 		
-		cbSym = new JComboBox<>(LogicFactory.getInstance().getSymAlgor()
-				.toArray());
-		cbAsym = new JComboBox<>(LogicFactory.getInstance().getAsymAlgor()
-				.toArray());
+		cbSym = GUIFactory.getInstance().createJComboBox(LogicFactory.getInstance().getSymAlgor());
+		cbAsym = GUIFactory.getInstance().createJComboBox(LogicFactory.getInstance().getAsymAlgor());
 		
 		panelSym.add(cbSym, BorderLayout.NORTH);
 		panelAsym.add(cbAsym, BorderLayout.NORTH);
@@ -101,7 +106,8 @@ public class GenerateKeyPanel extends JPanel
 		panelSym.add(bttSym, BorderLayout.SOUTH);
 		panelAsym.add(bttAsym, BorderLayout.SOUTH);
 		
-		this.add(tpane);
+		this.add(tpane, BorderLayout.CENTER);
+		//this.add(labelInfo, BorderLayout.SOUTH);
 	}
 	
 	private class ButtonListener implements ActionListener

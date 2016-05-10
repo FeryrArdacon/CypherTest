@@ -36,7 +36,7 @@ public class HashingPanel extends JPanel
 	 */
 	private static final long serialVersionUID = -6816143938760049890L;
 	private JTextArea taHash = GUIFactory.getInstance()
-			.createJTextArea(15, 120);
+			.createJTextArea(13, 120);
 	private JComboBox<Object> cbAlgor;
 	
 	public HashingPanel()
@@ -47,8 +47,8 @@ public class HashingPanel extends JPanel
 		JLabel labelKey = new JLabel("Hash value:");
 		JTextField tfSourceFile = GUIFactory.getInstance()
 				.createJHintTextField(100, "Source file");
-		cbAlgor = new JComboBox<Object>(LogicFactory.getInstance()
-				.getHashAlgor().toArray());
+		cbAlgor = GUIFactory.getInstance().createJComboBox(LogicFactory.getInstance()
+				.getHashAlgor());
 		JButton bttSelSource = new JButton("Search file ..."), bttHash = new JButton(
 				"Hash file");
 		
@@ -58,7 +58,7 @@ public class HashingPanel extends JPanel
 		
 		GridBagConstraints gbcSource = GUIFactory.getInstance().getConstrains(
 				0, 0, 1, 1, 1, 0), gbcKey = GUIFactory.getInstance()
-				.getConstrains(0, 1, 1, 1, 0, 0);
+				.getConstrains(0, 1, 1, 1, 1, 1);
 		
 		this.setLayout(new BorderLayout());
 		

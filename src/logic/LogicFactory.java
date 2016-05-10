@@ -14,8 +14,8 @@ public class LogicFactory {
 		List<CipherType> symAlgorList = new ArrayList<CipherType>();
 
 		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128, ""));
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192, "- (not working)"));
-		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256, "- (not working)"));
+		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192, "- (JCE Unlimited Strength needed)"));
+		symAlgorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256, "- (JCE Unlimited Strength needed)"));
 
 		return symAlgorList;
 	}
@@ -24,8 +24,8 @@ public class LogicFactory {
 		List<CipherType> asymAlgorList = new ArrayList<CipherType>();
 
 		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, "- (only short files (64 byte max.))"));
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working) (only short files (64 byte max.))"));
-		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working) (only short files (64 byte max.))"));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (JCE Unlimited Strength needed) (only short files (64 byte max.))"));
+		asymAlgorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (JCE Unlimited Strength needed) (only short files (64 byte max.))"));
 
 		return asymAlgorList;
 	}
@@ -33,14 +33,9 @@ public class LogicFactory {
 	public List<CipherType> getAllAlgor() {
 		List<CipherType> algorList = new ArrayList<CipherType>();
 
-		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 128, ""));
-		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 192, "- (not working)"));
-		algorList.add(new CipherType("AES", "AES/CBC/PKCS5Padding", (short) 256, "- (not working)"));
-
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 512, "- (only short files (64 byte max.))"));
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 1024, "- (not working) (only short files (64 byte max.))"));
-		algorList.add(new CipherType("RSA", "RSA/ECB/NoPadding", (short) 2048, "- (not working) (only short files (64 byte max.))"));
-
+		algorList.addAll(this.getSymAlgor());
+		algorList.addAll(this.getAsymAlgor());
+		
 		return algorList;
 	}
 

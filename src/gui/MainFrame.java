@@ -7,6 +7,7 @@ import gui.views.SignaturePanel;
 
 import java.awt.BorderLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
@@ -20,7 +21,8 @@ public class MainFrame extends JFrame
 	public MainFrame(String title)
 	{
 		super(title);
-		
+		this.setIconImage(new ImageIcon(getClass().getResource(
+				"/gui/resources/programm_icon.png")).getImage());
 		this.setLayout(new BorderLayout());
 		
 		JTabbedPane tpane = new JTabbedPane();
@@ -33,8 +35,8 @@ public class MainFrame extends JFrame
 		this.add(tpane, BorderLayout.CENTER);
 		
 		this.pack();
+		this.setMinimumSize(this.getSize());
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}

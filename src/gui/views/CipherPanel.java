@@ -39,7 +39,7 @@ public class CipherPanel extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 8597621776818313583L;
-	private JTextArea taKey = GUIFactory.getInstance().createJTextArea(15, 120);
+	private JTextArea taKey = GUIFactory.getInstance().createJTextArea(13, 120);
 	private JComboBox<Object> cbAlgor;
 	
 	public CipherPanel()
@@ -58,8 +58,8 @@ public class CipherPanel extends JPanel
 				.createJHintTextField(100, "Source file"),
 				tfTargetFile = GUIFactory
 						.getInstance().createJHintTextField(100, "Target file");
-		cbAlgor = new JComboBox<Object>(LogicFactory.getInstance()
-				.getAllAlgor().toArray());
+		cbAlgor = GUIFactory.getInstance().createJComboBox(LogicFactory.getInstance()
+				.getAllAlgor());
 		JButton bttSelSource = new JButton("Search file ..."),
 				bttSelTarget = new JButton(
 						"Search file ..."),
@@ -79,7 +79,7 @@ public class CipherPanel extends JPanel
 				0, 0, 1, 1, 1, 0), gbcTarget = GUIFactory.getInstance()
 						.getConstrains(0, 1, 1, 1, 1, 0),
 				gbcKey = GUIFactory
-						.getInstance().getConstrains(0, 2, 1, 1, 0, 0);
+						.getInstance().getConstrains(0, 2, 1, 1, 1, 1);
 						
 		this.setLayout(new BorderLayout());
 		
