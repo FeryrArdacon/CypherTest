@@ -1,15 +1,14 @@
 package gui;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+
 import gui.views.CipherPanel;
 import gui.views.GenerateKeyPanel;
 import gui.views.HashingPanel;
 import gui.views.SignaturePanel;
-
-import java.awt.BorderLayout;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 
 public class MainFrame extends JFrame
 {
@@ -21,8 +20,10 @@ public class MainFrame extends JFrame
 	public MainFrame(String title)
 	{
 		super(title);
-		this.setIconImage(new ImageIcon(getClass().getResource(
-				"/gui/resources/programm_icon.png")).getImage());
+		/*
+		 * this.setIconImage(new ImageIcon(getClass().getResource(
+		 * "/gui/resources/programm_icon.png")).getImage());
+		 */
 		this.setLayout(new BorderLayout());
 		
 		JTabbedPane tpane = new JTabbedPane();

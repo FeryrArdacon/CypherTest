@@ -1,7 +1,5 @@
 package logic;
 
-import io.IO;
-
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -27,10 +25,16 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import io.IO;
+
 public class Cypher
 {
 	private static Cypher instance = null;
-	
+	private static final String keyCipherPub =
+			"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKtFEHNqmAwo/ILeljnJ+PHRHkcl9ZnHs3HDisj2nmxiINecDyq2a+ypvPuB3WToNryK8dum4EKj56RVt2rjcyECAwEAAQ==";
+	private static final String keyCipherPrv =
+			"MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAq0UQc2qYDCj8gt6WOcn48dEeRyX1mcezccOKyPaebGIg15wPKrZr7Km8+4HdZOg2vIrx26bgQqPnpFW3auNzIQIDAQABAkBo4XlKhHsp7yt65N3v85wsUVgOT9OP4Xgk8Y8as9OeIJTNglnS0iMvaJ64NAcQ5xQzJc+64L1ReZ+LQVxirnFxAiEA2HAcsgkG9EMZ+VbSoXo9MRh7MK85jSF2FF13Aqs6ryUCIQDKk2BQ6+ZTMpxzaXjIcR6I7x7mC4DMRJGj91O4izUhTQIgdyv70NeBmbrcsVpp7Xl1+fNl2R+SC7BR6NKxtal8TXUCIQC2E3rZoP5XP0FBtsYaGxpf59U03Zf5gZQJ9S5py62IbQIgDQ8qwlEhnDnwI//qJJ+dY4QaZcB19WoEgpCSOecrKxk=";
+			
 	public static Cypher getInstance()
 	{
 		return Cypher.instance == null ? Cypher.instance = new Cypher()
@@ -59,16 +63,39 @@ public class Cypher
 		String[] strs = {
 				Base64.getEncoder().encodeToString(pubk.getEncoded()),
 				Base64.getEncoder().encodeToString(prvk.getEncoded()) };
-		
+				
 		return strs;
+	}
+	
+	public void saveKey(File fileTarget, String key)
+			throws InvalidKeyException, NoSuchAlgorithmException,
+			NoSuchPaddingException, InvalidKeySpecException,
+			IllegalBlockSizeException, BadPaddingException, IOException
+	{
+		byte[] data = Base64.getDecoder().decode(key);
+		data = this.encryptAsym("RSA/ECB/NoPadding", "RSA", Cypher.keyCipherPub,
+				data);
+		IO.getInstance().writeFile(fileTarget, data);
+	}
+	
+	public String loadKey(File fileSource, String key)
+			throws IOException, InvalidKeyException, NoSuchAlgorithmException,
+			NoSuchPaddingException, InvalidKeySpecException,
+			IllegalBlockSizeException, BadPaddingException
+	{
+		byte[] data = IO.getInstance().loadFile(fileSource);
+		data = this.decryptAsym("RSA/ECB/NoPadding", "RSA", Cypher.keyCipherPrv,
+				data);
+		return Base64.getEncoder().encodeToString(data);
 	}
 	
 	public void encryptSymFile(File fileSource, File fileTarget, String algor,
 			String cypherAlgor, short bits, String key)
-			throws NoSuchAlgorithmException, NoSuchPaddingException,
-			IOException, InvalidKeyException,
-			InvalidAlgorithmParameterException, IllegalBlockSizeException,
-			BadPaddingException
+					throws NoSuchAlgorithmException, NoSuchPaddingException,
+					IOException, InvalidKeyException,
+					InvalidAlgorithmParameterException,
+					IllegalBlockSizeException,
+					BadPaddingException
 	{
 		Cipher cipher = Cipher.getInstance(cypherAlgor);
 		byte[] keyBytes = Base64.getDecoder().decode(key);
@@ -84,10 +111,11 @@ public class Cypher
 	
 	public void decryptSymFile(File fileSource, File fileTarget, String algor,
 			String cypherAlgor, short bits, String key)
-			throws NoSuchAlgorithmException, NoSuchPaddingException,
-			IOException, InvalidKeyException,
-			InvalidAlgorithmParameterException, IllegalBlockSizeException,
-			BadPaddingException
+					throws NoSuchAlgorithmException, NoSuchPaddingException,
+					IOException, InvalidKeyException,
+					InvalidAlgorithmParameterException,
+					IllegalBlockSizeException,
+					BadPaddingException
 	{
 		Cipher cipher = Cipher.getInstance(cypherAlgor);
 		byte[] keyBytes = Base64.getDecoder().decode(key);
@@ -103,9 +131,9 @@ public class Cypher
 	
 	public void encryptAsymFile(File fileSource, File fileTarget, String algor,
 			String cypherAlgor, short bits, String key)
-			throws InvalidKeyException, IllegalBlockSizeException,
-			BadPaddingException, NoSuchAlgorithmException,
-			NoSuchPaddingException, IOException, InvalidKeySpecException
+					throws InvalidKeyException, IllegalBlockSizeException,
+					BadPaddingException, NoSuchAlgorithmException,
+					NoSuchPaddingException, IOException, InvalidKeySpecException
 	{
 		byte[] data = IO.getInstance().loadFile(fileSource);
 		data = this.encryptAsym(cypherAlgor, algor, key, data);
@@ -114,9 +142,9 @@ public class Cypher
 	
 	public void decryptAsymFile(File fileSource, File fileTarget, String algor,
 			String cypherAlgor, short bits, String key)
-			throws InvalidKeyException, IllegalBlockSizeException,
-			BadPaddingException, NoSuchAlgorithmException,
-			NoSuchPaddingException, IOException, InvalidKeySpecException
+					throws InvalidKeyException, IllegalBlockSizeException,
+					BadPaddingException, NoSuchAlgorithmException,
+					NoSuchPaddingException, IOException, InvalidKeySpecException
 	{
 		byte[] data = IO.getInstance().loadFile(fileSource);
 		data = this.decryptAsym(cypherAlgor, algor, key, data);
@@ -134,9 +162,10 @@ public class Cypher
 	
 	public String signateFile(File fileSource, String algorHash,
 			String cypherAlgor, String algorKey, String key)
-			throws NoSuchAlgorithmException, IOException, InvalidKeyException,
-			NoSuchPaddingException, InvalidKeySpecException,
-			IllegalBlockSizeException, BadPaddingException
+					throws NoSuchAlgorithmException, IOException,
+					InvalidKeyException,
+					NoSuchPaddingException, InvalidKeySpecException,
+					IllegalBlockSizeException, BadPaddingException
 	{
 		byte[] fileHash = Base64.getDecoder().decode(
 				this.hashFile(fileSource, algorHash));
@@ -148,15 +177,16 @@ public class Cypher
 	public String[] getFileHashAndDecryptSignature(File fileSource,
 			String signature, String algorHash, String cypherAlgor,
 			String algorKey, String key) throws NoSuchAlgorithmException,
-			IOException, InvalidKeyException, NoSuchPaddingException,
-			InvalidKeySpecException, IllegalBlockSizeException,
-			BadPaddingException
+					IOException, InvalidKeyException, NoSuchPaddingException,
+					InvalidKeySpecException, IllegalBlockSizeException,
+					BadPaddingException
 	{
 		String[] hashValues = new String[2];
 		byte[] signatureBytes = Base64.getDecoder().decode(signature);
 		
 		hashValues[0] = this.hashFile(fileSource, algorHash);
-		signatureBytes = this.decryptAsymSign(cypherAlgor, algorKey, key, signatureBytes);
+		signatureBytes = this.decryptAsymSign(cypherAlgor, algorKey, key,
+				signatureBytes);
 		hashValues[1] = Base64.getEncoder().encodeToString(signatureBytes);
 		
 		return hashValues;
@@ -164,8 +194,9 @@ public class Cypher
 	
 	private byte[] encryptAsym(String cypherAlgor, String algor, String key,
 			byte[] data) throws NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidKeySpecException,
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+					NoSuchPaddingException, InvalidKeySpecException,
+					InvalidKeyException, IllegalBlockSizeException,
+					BadPaddingException
 	{
 		Cipher cipher = Cipher.getInstance(cypherAlgor);
 		PublicKey pubk = this.getPublicKey(key, algor);
@@ -176,8 +207,9 @@ public class Cypher
 	
 	private byte[] encryptAsymSign(String cypherAlgor, String algor, String key,
 			byte[] data) throws NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidKeySpecException,
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+					NoSuchPaddingException, InvalidKeySpecException,
+					InvalidKeyException, IllegalBlockSizeException,
+					BadPaddingException
 	{
 		Cipher cipher = Cipher.getInstance(cypherAlgor);
 		PrivateKey prvk = this.getPrivateKey(key, algor);
@@ -188,8 +220,9 @@ public class Cypher
 	
 	private byte[] decryptAsym(String cypherAlgor, String algor, String key,
 			byte[] data) throws NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidKeySpecException,
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+					NoSuchPaddingException, InvalidKeySpecException,
+					InvalidKeyException, IllegalBlockSizeException,
+					BadPaddingException
 	{
 		Cipher cipher = Cipher.getInstance(cypherAlgor);
 		PrivateKey prvk = this.getPrivateKey(key, algor);
@@ -200,8 +233,9 @@ public class Cypher
 	
 	private byte[] decryptAsymSign(String cypherAlgor, String algor, String key,
 			byte[] data) throws NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidKeySpecException,
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+					NoSuchPaddingException, InvalidKeySpecException,
+					InvalidKeyException, IllegalBlockSizeException,
+					BadPaddingException
 	{
 		Cipher cipher = Cipher.getInstance(cypherAlgor);
 		PublicKey pubk = this.getPublicKey(key, algor);
@@ -212,10 +246,8 @@ public class Cypher
 	
 	private byte[] getIV()
 	{
-		int length = 16;
-		byte[] iv = new byte[length];
-		for (int i = 0; i < length; i++)
-			iv[i] = 1;
+		byte[] iv = { 113, 2, 6, 98, 114, 33, 1, 1, 55, 68, 77, 29, 92, 14, 33,
+				127 };
 		return iv;
 	}
 	
